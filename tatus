@@ -1,0 +1,232 @@
+[1mdiff --git a/public/script.js b/public/script.js[m
+[1mindex 8b13789..cfbd4c3 100644[m
+[1m--- a/public/script.js[m
+[1m+++ b/public/script.js[m
+[36m@@ -1 +1,76 @@[m
+[32m+[m[32mconst form = document.querySelector('#project-form');[m
+[32m+[m[32mconst nameInput = document.querySelector('#name');[m
+[32m+[m[32mconst statusInput = document.querySelector('#status');[m
+[32m+[m[32mconst projectList = document.querySelector('#project-list');[m
+[32m+[m[32mconst emptyState = document.querySelector('#empty-state');[m
+ [m
+[32m+[m[32m// Store projects in memory. Starts empty on every page load.[m
+[32m+[m[32mconst projects = [];[m
+[32m+[m
+[32m+[m[32m// Generate a unique ID for each project.[m
+[32m+[m[32mfunction generateProjectId() {[m
+[32m+[m[32m  return crypto.randomUUID();[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m// Display all projects in the list.[m
+[32m+[m[32mfunction renderProjects() {[m
+[32m+[m[32m  // Clear the list before rendering to avoid duplicates.[m
+[32m+[m[32m  projectList.replaceChildren();[m
+[32m+[m
+[32m+[m[32m  projects.forEach(project => {[m
+[32m+[m[32m    const listItem = document.createElement('li');[m
+[32m+[m
+[32m+[m[32m    const nameElement = document.createElement('span');[m
+[32m+[m[32m    nameElement.textContent = project.name;[m
+[32m+[m
+[32m+[m[32m    const statusElement = document.createElement('span');[m
+[32m+[m[32m    statusElement.textContent = ` — ${project.status}`;[m
+[32m+[m
+[32m+[m[32m    listItem.append(nameElement, statusElement);[m
+[32m+[m[32m    projectList.appendChild(listItem);[m
+[32m+[m[32m  });[m
+[32m+[m
+[32m+[m[32m  // Update the empty-state message if it exists.[m
+[32m+[m[32m  if (emptyState) {[m
+[32m+[m[32m    emptyState.hidden = projects.length > 0;[m
+[32m+[m[32m  }[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m// Handle form submission.[m
+[32m+[m[32mform.addEventListener('submit', event => {[m
+[32m+[m[32m  event.preventDefault();[m
+[32m+[m
+[32m+[m[32m  // Read the current form values.[m
+[32m+[m[32m  const name = nameInput.value.trim();[m
+[32m+[m[32m  const status = statusInput.value;[m
+[32m+[m
+[32m+[m[32m  // Reject an empty project name.[m
+[32m+[m[32m  if (name === '') {[m
+[32m+[m[32m    nameInput.setCustomValidity('Please enter a project name.');[m
+[32m+[m[32m    nameInput.reportValidity();[m
+[32m+[m[32m    return;[m
+[32m+[m[32m  }[m
+[32m+[m
+[32m+[m[32m  // Create a project from the submitted values.[m
+[32m+[m[32m  const project = {[m
+[32m+[m[32m    id: generateProjectId(),[m
+[32m+[m[32m    name: name,[m
+[32m+[m[32m    status: status[m
+[32m+[m[32m  };[m
+[32m+[m
+[32m+[m[32m  // Store the project and refresh the displayed list.[m
+[32m+[m[32m  projects.push(project);[m
+[32m+[m[32m  renderProjects();[m
+[32m+[m
+[32m+[m[32m  // Reset validation and prepare the form for another project.[m
+[32m+[m[32m  nameInput.setCustomValidity('');[m
+[32m+[m[32m  form.reset();[m
+[32m+[m[32m});[m
+[32m+[m
+[32m+[m[32m// Clear custom validation when the user edits the name.[m
+[32m+[m[32mnameInput.addEventListener('input', () => {[m
+[32m+[m[32m  nameInput.setCustomValidity('');[m
+[32m+[m[32m});[m
+[32m+[m
+[32m+[m[32m// Render the initial empty state.[m
+[32m+[m[32mrenderProjects();[m
+\ No newline at end of file[m
+[1mdiff --git a/public/style.css b/public/style.css[m
+[1mindex 8b13789..c3f39cb 100644[m
+[1m--- a/public/style.css[m
+[1m+++ b/public/style.css[m
+[36m@@ -1 +1,197 @@[m
+[32m+[m[32m```css[m
+[32m+[m[32m/* General page styling */[m
+[32m+[m[32m* {[m
+[32m+[m[32m  box-sizing: border-box;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mbody {[m
+[32m+[m[32m  margin: 0;[m
+[32m+[m[32m  padding: 32px 20px;[m
+[32m+[m[32m  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",[m
+[32m+[m[32m    sans-serif;[m
+[32m+[m[32m  font-size: 16px;[m
+[32m+[m[32m  line-height: 1.6;[m
+[32m+[m[32m  color: #1f2937;[m
+[32m+[m[32m  background-color: #f4f7fb;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/* Page header */[m
+[32m+[m[32mheader {[m
+[32m+[m[32m  max-width: 800px;[m
+[32m+[m[32m  margin: 0 auto 28px;[m
+[32m+[m[32m  text-align: center;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mh1 {[m
+[32m+[m[32m  margin: 0 0 8px;[m
+[32m+[m[32m  color: #173b70;[m
+[32m+[m[32m  font-size: clamp(1.8rem, 4vw, 2.5rem);[m
+[32m+[m[32m  line-height: 1.2;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mheader p {[m
+[32m+[m[32m  margin: 0;[m
+[32m+[m[32m  color: #5b6575;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/* Main content */[m
+[32m+[m[32mmain {[m
+[32m+[m[32m  width: 100%;[m
+[32m+[m[32m  max-width: 800px;[m
+[32m+[m[32m  margin: 0 auto;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/* Form and project list sections */[m
+[32m+[m[32msection {[m
+[32m+[m[32m  margin-bottom: 24px;[m
+[32m+[m[32m  padding: 24px;[m
+[32m+[m[32m  background-color: #ffffff;[m
+[32m+[m[32m  border: 1px solid #e1e7ef;[m
+[32m+[m[32m  border-radius: 12px;[m
+[32m+[m[32m  box-shadow: 0 4px 14px rgba(31, 41, 55, 0.05);[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mh2 {[m
+[32m+[m[32m  margin: 0 0 20px;[m
+[32m+[m[32m  color: #173b70;[m
+[32m+[m[32m  font-size: 1.35rem;[m
+[32m+[m[32m  line-height: 1.3;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/* Form labels */[m
+[32m+[m[32mlabel {[m
+[32m+[m[32m  display: block;[m
+[32m+[m[32m  margin-bottom: 6px;[m
+[32m+[m[32m  font-weight: 600;[m
+[32m+[m[32m  color: #374151;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/* Text input and status dropdown */[m
+[32m+[m[32minput,[m
+[32m+[m[32mselect {[m
+[32m+[m[32m  display: block;[m
+[32m+[m[32m  width: 100%;[m
+[32m+[m[32m  min-height: 46px;[m
+[32m+[m[32m  margin: 0 0 18px;[m
+[32m+[m[32m  padding: 10px 12px;[m
+[32m+[m[32m  font: inherit;[m
+[32m+[m[32m  color: #1f2937;[m
+[32m+[m[32m  background-color: #ffffff;[m
+[32m+[m[32m  border: 1px solid #cbd5e1;[m
+[32m+[m[32m  border-radius: 7px;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32minput::placeholder {[m
+[32m+[m[32m  color: #8993a2;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32minput:focus,[m
+[32m+[m[32mselect:focus {[m
+[32m+[m[32m  border-color: #2563eb;[m
+[32m+[m[32m  outline: 3px solid rgba(37, 99, 235, 0.25);[m
+[32m+[m[32m  outline-offset: 2px;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/* Buttons */[m
+[32m+[m[32mbutton {[m
+[32m+[m[32m  min-height: 44px;[m
+[32m+[m[32m  padding: 10px 18px;[m
+[32m+[m[32m  font: inherit;[m
+[32m+[m[32m  font-weight: 600;[m
+[32m+[m[32m  color: #ffffff;[m
+[32m+[m[32m  background-color: #2563eb;[m
+[32m+[m[32m  border: 1px solid #2563eb;[m
+[32m+[m[32m  border-radius: 7px;[m
+[32m+[m[32m  cursor: pointer;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m#save-button {[m
+[32m+[m[32m  margin-right: 8px;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mbutton:hover {[m
+[32m+[m[32m  background-color: #1d4ed8;[m
+[32m+[m[32m  border-color: #1d4ed8;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32mbutton:focus-visible {[m
+[32m+[m[32m  outline: 3px solid #f59e0b;[m
+[32m+[m[32m  outline-offset: 3px;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/* Hidden controls should remain hidden */[m
+[32m+[m[32m[hidden] {[m
+[32m+[m[32m  display: none !important;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/* Status message */[m
+[32m+[m[32m#message {[m
+[32m+[m[32m  margin: 16px 0 0;[m
+[32m+[m[32m  color: #166534;[m
+[32m+[m[32m  overflow-wrap: anywhere;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m[32m/* Empty state and project list */[m
+[32m+[m[32m#empty-state {[m
+[32m+[m[32m  margin: 0;[m
+[32m+[m[32m  padding: 16px;[m
+[32m+[m[32m  color: #64748b;[m
+[32m+[m[32m  text-align: center;[m
+[32m+[m[32m  background-color: #f8fafc;[m
+[32m+[m[32m  border: 1px dashed #cbd5e1;[m
+[32m+[m[32m  border-radius: 8px;[m
+[32m+[m[32m}[m
+[32m+[m
+[32m+[m
