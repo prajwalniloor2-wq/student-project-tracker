@@ -189,6 +189,7 @@ function renderProjects() {
 
 async function loadProjects(successMessage = '') {
   isLoading = true;
+  emptyState.hidden = !hasLoadedProjects || projects.length > 0;
   updateMutationControls();
   showMessage('Loading projects…');
 
